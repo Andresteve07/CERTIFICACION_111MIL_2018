@@ -25,14 +25,14 @@ public class VistaRegistroImpl extends javax.swing.JPanel implements VistaRegist
 
     private PresentadorRegistro presentador;
     private ControladorVistas controlador;
-    private DefaultTableModel tableModel;
+    private DefaultTableModel modeloTablaLotes;
 
     public VistaRegistroImpl(ControladorVistas controlador, SessionFactory fabricaSesiones) {
         this.controlador = controlador;
-        this.tableModel = new DefaultTableModel();
-        this.tableModel.addColumn("Número");
-        this.tableModel.addColumn("Superficie");
-        this.tableModel.addColumn("Tipo de Suelo");
+        this.modeloTablaLotes = new DefaultTableModel();
+        this.modeloTablaLotes.addColumn("Número");
+        this.modeloTablaLotes.addColumn("Superficie");
+        this.modeloTablaLotes.addColumn("Tipo de Suelo");
         initComponents();
         afterInit();
         this.presentador = new PresentadorRegistroImpl(this, fabricaSesiones);
@@ -146,7 +146,7 @@ public class VistaRegistroImpl extends javax.swing.JPanel implements VistaRegist
             }
         });
 
-        tablaLotes.setModel(tableModel);
+        tablaLotes.setModel(modeloTablaLotes);
         jScrollPane1.setViewportView(tablaLotes);
 
         BotonEditarLote.setText("Editar");
@@ -242,7 +242,7 @@ public class VistaRegistroImpl extends javax.swing.JPanel implements VistaRegist
                                         .addComponent(textoErrorNombreCampo))
                                     .addComponent(TextoSuperficieCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(25, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -433,12 +433,12 @@ public class VistaRegistroImpl extends javax.swing.JPanel implements VistaRegist
 
     @Override
     public void agregarItem(ItemLote item) {
-        this.tableModel.addRow(new Object[]{item.getNumero().toString(),item.getSuperficie().toString(),item.getTipoSuelo()});
+        this.modeloTablaLotes.addRow(new Object[]{item.getNumero().toString(),item.getSuperficie().toString(),item.getTipoSuelo()});
     }
 
     @Override
     public void quitarItem(Integer indice) {
-        this.tableModel.removeRow(indice);
+        this.modeloTablaLotes.removeRow(indice);
     }
 
     @Override
@@ -470,7 +470,19 @@ public class VistaRegistroImpl extends javax.swing.JPanel implements VistaRegist
         this.TextoNumeroLote.setText("");
         this.TextoSuperficieLote.setText("");
         this.selectorTiposSuelo.setSelectedIndex(0);
-        this.tableModel.setRowCount(0);
+        this.modeloTablaLotes.setRowCount(0);
         this.tablaLotes.revalidate();
+    }
+
+    @Override
+    public void lanzarVistaResumen(Long id) {
+        this.controlador.lanzarVistaResumen(id);
+    }
+
+    @Override
+    public void limpiarDatosLote() {
+        this.TextoNumeroLote.setText("");
+        this.TextoSuperficieLote.setText("");
+        this.selectorTiposSuelo.setSelectedIndex(0);
     }
 }

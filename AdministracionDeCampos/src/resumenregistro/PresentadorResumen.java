@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package administraciondecampos;
+package resumenregistro;
+
+import administraciondecampos.Presentador;
 
 /**
  *
  * @author andresteve07
  */
-public interface ControladorVistas {
-    public void lanzarVistaRegistro();
-    public void lanzarVistaResumen(Long idCampo);
+public interface PresentadorResumen extends Presentador{
+    
 }

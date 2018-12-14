@@ -34,4 +34,8 @@ public interface VistaRegistro extends Vista{
 
     public void limpiarTodo();
 
+    public void lanzarVistaResumen(Long id);
+
+    public void limpiarDatosLote();
+
 }

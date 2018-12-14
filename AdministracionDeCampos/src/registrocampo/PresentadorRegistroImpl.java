@@ -112,6 +112,7 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
             nuevoLote.setTipoSuelo(tipoSuelo);
             this.lotesEnTabla.add(nuevoLote);
             this.vista.agregarItem(new ItemLote(numLote,sup,TiposSuelo.from(tipoSuelo).toString()));
+            this.vista.limpiarDatosLote();
         } catch(NumberFormatException numExc){
             this.vista.mostrarParametrosInvalidos();
         }
@@ -155,18 +156,23 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
 
     @Override
     public void registrarCampo() {
-        /*
-        if(validarNombreCampo(this.nombreCampo)
-                && validarSuperficieCampo(this.superficieCampo)
-                && validarNumeroLote(this.nroLote)
-                && validarSuperficieLote(this.supLote)){
+        boolean nombreCampoValido = validarNombreCampo(this.nombreCampo);
+        boolean supCampoValida = validarSuperficieCampo(this.superficieCampo);
+        System.out.println("VALID-  nombreCampoValido: " + nombreCampoValido 
+                + "    supCampoValida: " + supCampoValida);
+        if(nombreCampoValido
+                && supCampoValida){
             Campo campo = new Campo();
             campo.setNombre(this.nombreCampo);
+            for(Lote lote: this.lotesEnTabla){
+                lote.setCampo(campo);
+            }
             campo.setLotes(new HashSet<>(lotesEnTabla));
             campo.setSuperficie(this.ultimoValorSuperficieCampo);
             this.proveedor.guardarCampo(campo);
+            this.vista.lanzarVistaResumen(campo.getId());
         }
-        */
+        /*
         Campo campo = new Campo();
             campo.setNombre(this.nombreCampo);
             for(Lote lote: this.lotesEnTabla){
@@ -175,6 +181,8 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
             campo.setLotes(new HashSet<>(lotesEnTabla));
             campo.setSuperficie(this.ultimoValorSuperficieCampo);
             this.proveedor.guardarCampo(campo);
+        */
+            
     }
     
 }

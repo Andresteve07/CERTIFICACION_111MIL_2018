@@ -9,7 +9,7 @@ package registrocampo;
  *
  * @author andresteve07
  */
-class ItemLote {
+public class ItemLote {
     private Long numero;
     private Long superficie;
     private String tipoSuelo;

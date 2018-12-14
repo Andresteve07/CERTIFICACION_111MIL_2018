@@ -48,6 +48,7 @@ public class ProveedorRegistroImpl implements ProveedorRegistro{
         Transaction tx = sesion.beginTransaction();
         sesion.save(campo);
         tx.commit();
+        
     }
     
 }

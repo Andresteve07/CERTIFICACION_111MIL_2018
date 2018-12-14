@@ -12,6 +12,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import registrocampo.VistaRegistro;
 import registrocampo.VistaRegistroImpl;
+import resumenregistro.VistaResumen;
+import resumenregistro.VistaResumenImpl;
 
 /**
  *
@@ -20,6 +22,8 @@ import registrocampo.VistaRegistroImpl;
 public class AdministracionDeCampos implements ControladorVistas{
     private VentanaPrincipal ventanaPrincipal;
     private VistaRegistro vistaRegistro;
+    private VistaResumen vistaResumen;
+    
     private final SessionFactory fabricaSesiones;
     private Session sesionaActual;
 
@@ -67,8 +71,12 @@ public class AdministracionDeCampos implements ControladorVistas{
     }
 
     @Override
-    public void lanzarVistaResumen() {
-        
+    public void lanzarVistaResumen(Long idCampo) {
+        if (this.vistaResumen == null){
+            this.vistaResumen = new VistaResumenImpl(idCampo, this, fabricaSesiones);
+        }
+        this.ventanaPrincipal.setTitle("Campo registrado con Éxito");
+        this.cambiarPanel(this.vistaResumen.getPanel());
     }
     
 }
