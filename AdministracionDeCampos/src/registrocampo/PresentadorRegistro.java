@@ -12,10 +12,10 @@ import administraciondecampos.Presentador;
  * @author andresteve07
  */
 public interface PresentadorRegistro extends Presentador{
-    public void validarNombreCampo(String nombre);
-    public void validarSuperficieCampo(String superficie);
-    public void validarNumeroLote(String numeroLote);
-    public void validarSuperficieLote(String superficieLote);
+    public boolean validarNombreCampo(String nombre);
+    public boolean validarSuperficieCampo(String superficie);
+    public boolean validarNumeroLote(String numeroLote);
+    public boolean validarSuperficieLote(String superficieLote);
     public void agregarLote(String nroLote, String supLote, Integer tipoSuelo);
     public void editarLote(Integer indice);
     public void quitarLote(Integer indice);

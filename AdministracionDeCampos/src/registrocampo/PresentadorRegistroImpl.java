@@ -9,6 +9,7 @@ import administraciondecampos.entidades.Campo;
 import administraciondecampos.entidades.Lote;
 import administraciondecampos.entidades.TiposSuelo;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,11 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
     private List<Lote> lotesEnTabla;
     private Long ultimoValorSuperficieCampo;
     
+    private String nombreCampo;
+    private String superficieCampo;
+    private String nroLote;
+    private String supLote;
+    
     public PresentadorRegistroImpl(VistaRegistro vista, SessionFactory fabricaSesiones){
         this.lotesEnTabla = new ArrayList<>();
         this.vista = vista;
@@ -36,39 +42,47 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
     }
 
     @Override
-    public void validarNombreCampo(String nombre) {
+    public boolean validarNombreCampo(String nombre) {
         List<Campo> campos = this.proveedor.buscarPorNombre(nombre);
+        this.nombreCampo = nombre;
         if(campos.isEmpty()){
             this.vista.ocultarNombreCampoEnUso();
+            return true;
         } else {
             this.vista.mostrarNombreCampoEnUso();
+            return false;
         }
         
     }
 
     @Override
-    public void validarSuperficieCampo(String superficie) {
+    public boolean validarSuperficieCampo(String superficie) {
         try{
+            this.superficieCampo = superficie;
             this.ultimoValorSuperficieCampo = Long.parseLong(superficie);
+            return true;
         } catch(NumberFormatException numExc){
             this.vista.mostrarParametrosInvalidos();
+            return false;
         }
     }
 
     @Override
-    public void validarNumeroLote(String numeroLote) {
+    public boolean validarNumeroLote(String numeroLote) {
+        this.nroLote = numeroLote;
         for(Lote lote: this.lotesEnTabla){
             if(lote.getNumero() == Long.parseLong(numeroLote)){
                 this.vista.mostrarNroLoteEnUso();
-                return;
+                return false;
             }
         }
         this.vista.ocultarNroLoteEnUso();
-        
+        return true;
     }
 
     @Override
-    public void validarSuperficieLote(String superficieLote) {
+    public boolean validarSuperficieLote(String superficieLote) {
+        this.supLote = superficieLote;
         Long sumaSupLotes = 0L;
         for(Lote lote: this.lotesEnTabla){
             sumaSupLotes+=lote.getSuperficie();
@@ -76,11 +90,14 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
         try{
             if(sumaSupLotes + Long.parseLong(superficieLote) > this.ultimoValorSuperficieCampo){
             this.vista.mostrarMaximoSupExcedido();
+            return false;
             } else {
                 this.vista.ocultarMaximoSupExcedido();
+                return true;
             }
         } catch(NumberFormatException formatExc){
             this.vista.mostrarParametrosInvalidos();
+            return false;
         }       
     }
 
@@ -130,12 +147,34 @@ public class PresentadorRegistroImpl implements PresentadorRegistro{
 
     @Override
     public void cancelarRegistro() {
-        
+        this.lotesEnTabla.clear();
+        imprimirLotes();
+        this.ultimoValorSuperficieCampo=null;
+        this.vista.limpiarTodo();
     }
 
     @Override
     public void registrarCampo() {
-        
+        /*
+        if(validarNombreCampo(this.nombreCampo)
+                && validarSuperficieCampo(this.superficieCampo)
+                && validarNumeroLote(this.nroLote)
+                && validarSuperficieLote(this.supLote)){
+            Campo campo = new Campo();
+            campo.setNombre(this.nombreCampo);
+            campo.setLotes(new HashSet<>(lotesEnTabla));
+            campo.setSuperficie(this.ultimoValorSuperficieCampo);
+            this.proveedor.guardarCampo(campo);
+        }
+        */
+        Campo campo = new Campo();
+            campo.setNombre(this.nombreCampo);
+            for(Lote lote: this.lotesEnTabla){
+                lote.setCampo(campo);
+            }
+            campo.setLotes(new HashSet<>(lotesEnTabla));
+            campo.setSuperficie(this.ultimoValorSuperficieCampo);
+            this.proveedor.guardarCampo(campo);
     }
     
 }

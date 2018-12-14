@@ -15,4 +15,6 @@ import java.util.List;
 public interface ProveedorRegistro {
 
     public List<Campo> buscarPorNombre(String nombre);
+
+    public void guardarCampo(Campo campo);
 }

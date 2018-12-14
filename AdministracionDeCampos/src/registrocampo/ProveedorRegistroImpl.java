@@ -41,5 +41,13 @@ public class ProveedorRegistroImpl implements ProveedorRegistro{
         tx.commit();        
         return campos;
     }
+
+    @Override
+    public void guardarCampo(Campo campo) {
+        Session sesion = this.fabricaSesiones.getCurrentSession();
+        Transaction tx = sesion.beginTransaction();
+        sesion.save(campo);
+        tx.commit();
+    }
     
 }

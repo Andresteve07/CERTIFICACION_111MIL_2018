@@ -32,4 +32,6 @@ public interface VistaRegistro extends Vista{
 
     public void ocultarMaximoSupExcedido();
 
+    public void limpiarTodo();
+
 }

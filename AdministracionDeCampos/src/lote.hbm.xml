@@ -51,10 +51,10 @@ Contributor(s):
         <property name="superficie" type="long">
             <column name="superficie"/>
         </property>
-        <property name="tipoSuelo" type="long">
+        <property name="tipoSuelo" type="integer">
             <column name="tipo_suelo"/>
         </property>
-        <many-to-one name="campo" class="Campo">
+        <many-to-one name="campo" class="Campo" cascade="all">
             <column name="id_campo" not-null="true"/>
 	</many-to-one>
     </class>
