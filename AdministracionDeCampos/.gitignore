@@ -1,0 +1,11 @@
+**/nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# NetBeans specific
+nbproject/private/
+nbactions.xml
+nb-configuration.xml
